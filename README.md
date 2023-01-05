@@ -1,6 +1,6 @@
 # Autonomous Slipper
 
-12월 프로젝트 #1
+12월 프로젝트 #1 (x) => Vacation Project
 
 WEBCAM: 1920x1080 (31FPS)
 
