@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 cap = cv2.VideoCapture(0)
-
+...
 while True:
     ret, frame = cap.read()
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
