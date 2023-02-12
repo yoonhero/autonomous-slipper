@@ -1,4 +1,7 @@
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    pass
 from dataclasses import dataclass
 import time
 
@@ -12,7 +15,13 @@ class MotorPin:
     ena: int
 
 
-class RCDriver():
+# class CustomPID():
+#     def __init__(self):
+#         self.pwms = []
+
+#     def update(self, ):
+
+class Motor():
     def __init__(self):
         self.leftMotor = MotorPin(36, 38, 32)
         self.rightMotor = MotorPin(16, 18, 12)
@@ -25,7 +34,6 @@ class RCDriver():
         GPIO.setup(self.leftMotor.in1, GPIO.OUT)
         GPIO.setup(self.leftMotor.in2, GPIO.OUT)
         GPIO.setup(self.leftMotor.ena, GPIO.OUT)
-
         GPIO.setup(self.rightMotor.in1, GPIO.OUT)
         GPIO.setup(self.rightMotor.in2, GPIO.OUT)
         GPIO.setup(self.rightMotor.ena, GPIO.OUT)
@@ -33,7 +41,6 @@ class RCDriver():
         # TODO: Test PWM
         self.power_left = GPIO.PWM(self.leftMotor.ena, 100)
         self.power_right = GPIO.PWM(self.rightMotor.ena, 100)
-
         self.power_left.start(0)
         self.power_right.start(0)
 
@@ -42,45 +49,45 @@ class RCDriver():
     def stop_all(self):
         GPIO.setup(self.leftMotor.in1, GPIO.LOW)
         GPIO.setup(self.leftMotor.in2, GPIO.LOW)
-
         GPIO.setup(self.rightMotor.in1, GPIO.LOW)
         GPIO.setup(self.rightMotor.in2, GPIO.LOW)
 
-    def changePWM(self, pwm):
-        self.power_left.ChangeDutyCycle(pwm)
-        self.power_right.changeDutyCycle(pwm)
+    def changePWM(self, left_pwm, right_pwm):
+        self.power_left.ChangeDutyCycle(left_pwm)
+        self.power_right.changeDutyCycle(right_pwm)
 
     def forward(self, velocity):
+        pwm = velocity
+        self.changePWM(pwm, pwm)
+
         GPIO.output(self.leftMotor.in1, GPIO.LOW)
         GPIO.output(self.leftMotor.in2, GPIO.HIGH)
-
         GPIO.output(self.rightMotor.in1, GPIO.HIGH)
         GPIO.output(self.rightMotor.in2, GPIO.LOW)
 
-        self.changePWM(velocity)
-
     def back(self, velocity):
+        pwm = velocity
+        self.changePWM(pwm)
+
         GPIO.output(self.leftMotor.in1, GPIO.HIGH)
         GPIO.output(self.leftMotor.in2, GPIO.LOW)
-
         GPIO.output(self.rightMotor.in1, GPIO.LOW)
         GPIO.output(self.rightMotor.in2, GPIO.HIGH)
 
-        self.changePWM(velocity)
-
-    def right(self, angle):
+    def right(self, right_pwm, left_pwm):
+        self.changePWM(right_pwm, left_pwm)
         # TODO : Test Angle for accurate turning
 
         GPIO.output(self.leftMotor.in1, GPIO.LOW)
         GPIO.output(self.leftMotor.in2, GPIO.HIGH)
-
         GPIO.output(self.rightMotor.in1, GPIO.LOW)
-        GPIO.output(self.rightMotor.in2, GPIO.LOW)
+        GPIO.output(self.rightMotor.in2, GPIO.HIGH)
 
-    def left(self, angle):
-        GPIO.output(self.leftMotor.in1, GPIO.LOW)
+    def left(self, right_pwm, left_pwm):
+        self.changePWM(right_pwm, left_pwm)
+
+        GPIO.output(self.leftMotor.in1, GPIO.HIGH)
         GPIO.output(self.leftMotor.in2, GPIO.LOW)
-
         GPIO.output(self.rightMotor.in1, GPIO.HIGH)
         GPIO.output(self.rightMotor.in2, GPIO.LOW)
 
@@ -89,7 +96,7 @@ class RCDriver():
 
 
 if __name__ == "__main__":
-    rcdriver = RCDriver()
+    rcdriver = Motor()
 
     while True:
         for i in range(3):
