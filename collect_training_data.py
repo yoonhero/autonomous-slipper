@@ -10,7 +10,7 @@ import pandas as pd
 
 from camera import CAM
 import config
-# from motor import Motor
+from motor import Motor
 
 IMAGE_WIDTH, IMAGE_HEIGHT = config.IMAGE_WIDTH, config.IMAGE_HEIGHT
 
@@ -18,7 +18,7 @@ IMAGE_WIDTH, IMAGE_HEIGHT = config.IMAGE_WIDTH, config.IMAGE_HEIGHT
 class CollectTrainingData(object):
 
     def __init__(self):
-        # self.rc_driver = Motor()
+        self.rc_driver = Motor()
 
         # Create Labels
         self.k = np.eye(3).astype(np.int32)
@@ -64,13 +64,13 @@ class CollectTrainingData(object):
                 self.screen.fill([255, 255, 255])
                 image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                org = (50, 50)
-                fontScale = 1
-                color = (255, 0, 0)
-                thickness = 2
-                image = cv2.putText(image, 'Collect Traning Data', org, font,
-                                    fontScale, color, thickness)
+                # font = cv2.FONT_HERSHEY_SIMPLEX
+                # org = (50, 50)
+                # fontScale = 1
+                # color = (255, 0, 0)
+                # thickness = 2
+                # image = cv2.putText(image, 'Collect Traning Data', org, font,
+                #                     fontScale, color, thickness)
 
                 # print(image.shape)
                 pygame_image = pygame.image.frombuffer(
