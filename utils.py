@@ -1,6 +1,8 @@
 import shutil
 import os
 import torch
+import random
+import numpy as np
 
 import config
 from model import Model
@@ -29,6 +31,16 @@ def load_model(PATH):
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
 
     return model, optimizer
+
+
+def set_seed(random_seed):
+    torch.manual_seed(random_seed)
+    torch.cuda.manual_seed(random_seed)
+    torch.cuda.manual_seed_all(random_seed)  # if use multi-GPU
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(random_seed)
+    random.seed(random_seed)
 
 
 if __name__ == "__main__":
