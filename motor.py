@@ -57,8 +57,8 @@ class Motor():
         self.power_right.changeDutyCycle(right_pwm)
 
     def forward(self, velocity):
-        pwm = velocity
-        self.changePWM(pwm, pwm)
+        pwm1, pwm2 = velocity[0], velocity[1]
+        self.changePWM(pwm1, pwm2)
 
         GPIO.output(self.leftMotor.in1, GPIO.LOW)
         GPIO.output(self.leftMotor.in2, GPIO.HIGH)
@@ -66,15 +66,16 @@ class Motor():
         GPIO.output(self.rightMotor.in2, GPIO.LOW)
 
     def back(self, velocity):
-        pwm = velocity
-        self.changePWM(pwm)
+        pwm1, pwm2 = velocity[0], velocity[1]
+        self.changePWM(pwm1, pwm2)
 
         GPIO.output(self.leftMotor.in1, GPIO.HIGH)
         GPIO.output(self.leftMotor.in2, GPIO.LOW)
         GPIO.output(self.rightMotor.in1, GPIO.LOW)
         GPIO.output(self.rightMotor.in2, GPIO.HIGH)
 
-    def right(self, right_pwm, left_pwm):
+    def right(self, velocity):
+        right_pwm, left_pwm = velocity[0], velocity[1]
         self.changePWM(right_pwm, left_pwm)
         # TODO : Test Angle for accurate turning
 
@@ -83,7 +84,8 @@ class Motor():
         GPIO.output(self.rightMotor.in1, GPIO.LOW)
         GPIO.output(self.rightMotor.in2, GPIO.HIGH)
 
-    def left(self, right_pwm, left_pwm):
+    def left(self, velocity):
+        right_pwm, left_pwm = velocity[0], velocity[1]
         self.changePWM(right_pwm, left_pwm)
 
         GPIO.output(self.leftMotor.in1, GPIO.HIGH)
