@@ -87,7 +87,9 @@ def validation_loop(model, criterion, dataloader):
 
             cost += loss.item()
 
-            acc += (torch.argmax(pred, dim=1).unsqueeze(1) == y).float().sum()
+            # acc += (torch.argmax(pred, dim=1).unsqueeze(1) == y).float().sum()
+            _, predicted = torch.max(pred.data, 1)
+            acc += (predicted == y).sum().item()
 
     accuracy = 100 * acc / len(validation_dataset)
     cost = cost / len(dataloader)

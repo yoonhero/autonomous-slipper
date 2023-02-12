@@ -64,13 +64,13 @@ class CollectTrainingData(object):
                 self.screen.fill([255, 255, 255])
                 image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                org = (50, 50)
-                fontScale = 1
-                color = (255, 0, 0)
-                thickness = 2
-                image = cv2.putText(image, 'Collect Traning Data', org, font,
-                                    fontScale, color, thickness)
+                # font = cv2.FONT_HERSHEY_SIMPLEX
+                # org = (50, 50)
+                # fontScale = 1
+                # color = (255, 0, 0)
+                # thickness = 2
+                # image = cv2.putText(image, 'Collect Traning Data', org, font,
+                #                     fontScale, color, thickness)
 
                 # print(image.shape)
                 pygame_image = pygame.image.frombuffer(

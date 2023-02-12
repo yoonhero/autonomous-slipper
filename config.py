@@ -1,7 +1,6 @@
 import torchvision.transforms as T
-IMAGE_WIDTH = 540
-IMAGE_HEIGHT = 300
-
+IMAGE_WIDTH = 864
+IMAGE_HEIGHT = 480
 LEARNING_RATE = 0.002
 MOMENTUM = 0.9
 
