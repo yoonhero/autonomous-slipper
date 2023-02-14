@@ -36,17 +36,17 @@ class CAM(object):
 if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
 
-    for i in range(20):
+    while True:
         ret, frame = cap.read()
 
         if ret:
             cv2.imshow("hi", frame)
-
-            import time
-            time.sleep(1)
-
-            cv2.imwrite(f'./calibration/cal{i}.png', frame)
-
+#
+#            import time
+#            time.sleep(1)
+#
+#            cv2.imwrite(f'./calibration/cal{i}.png', frame)
+#
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
         else: 

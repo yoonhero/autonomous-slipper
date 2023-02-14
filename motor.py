@@ -23,8 +23,8 @@ class MotorPin:
 
 class Motor():
     def __init__(self):
-        self.leftMotor = MotorPin(5, 6, 19)
-        self.rightMotor = MotorPin(16, 20, 12)
+        self.leftMotor = MotorPin(5, 6, 13)
+        self.rightMotor = MotorPin(16, 26, 12)
 
         GPIO.setmode(GPIO.BCM)
 
@@ -51,12 +51,13 @@ class Motor():
         GPIO.setup(self.leftMotor.in2, GPIO.LOW)
         GPIO.setup(self.rightMotor.in1, GPIO.LOW)
         GPIO.setup(self.rightMotor.in2, GPIO.LOW)
+        self.changePWM(0, 0)
 
     def changePWM(self, left_pwm, right_pwm):
         self.power_left.ChangeDutyCycle(left_pwm)
-        self.power_right.changeDutyCycle(right_pwm)
+        self.power_right.ChangeDutyCycle(right_pwm)
 
-    def forward(self, velocity):
+    def back(self, velocity):
         pwm1, pwm2 = velocity[0], velocity[1]
         self.changePWM(pwm1, pwm2)
 
@@ -65,7 +66,7 @@ class Motor():
         GPIO.output(self.rightMotor.in1, GPIO.HIGH)
         GPIO.output(self.rightMotor.in2, GPIO.LOW)
 
-    def back(self, velocity):
+    def forward(self, velocity):
         pwm1, pwm2 = velocity[0], velocity[1]
         self.changePWM(pwm1, pwm2)
 
@@ -74,7 +75,7 @@ class Motor():
         GPIO.output(self.rightMotor.in1, GPIO.LOW)
         GPIO.output(self.rightMotor.in2, GPIO.HIGH)
 
-    def right(self, velocity):
+    def left(self, velocity):
         right_pwm, left_pwm = velocity[0], velocity[1]
         self.changePWM(right_pwm, left_pwm)
         # TODO : Test Angle for accurate turning
@@ -84,7 +85,7 @@ class Motor():
         GPIO.output(self.rightMotor.in1, GPIO.LOW)
         GPIO.output(self.rightMotor.in2, GPIO.HIGH)
 
-    def left(self, velocity):
+    def right(self, velocity):
         right_pwm, left_pwm = velocity[0], velocity[1]
         self.changePWM(right_pwm, left_pwm)
 
@@ -99,9 +100,23 @@ class Motor():
 
 if __name__ == "__main__":
     rcdriver = Motor()
+    import time
 
     while True:
         for i in range(3):
             vel = (i+1)*30
+            velocity = [vel, vel]
 
-            rcdriver.forward(vel)
+            time.sleep(1)
+            print(f"PWM: {vel}")
+
+            rcdriver.forward(velocity)
+
+            time.sleep(1)
+
+            rcdriver.left(velocity)
+
+
+            time.sleep(1)
+
+            rcdriver.right(velocity)

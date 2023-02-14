@@ -49,7 +49,7 @@ class CollectTrainingData(object):
         # [right_pwm, left_pwm]
         motor = np.zeros((2, ))
         # TODO: INITIAL PWM Forward
-        initial_pwm = 100
+        initial_pwm = config.MOTOR_PWM
 
         # One hot vector for Behavior Decision
         Y = 0
@@ -74,14 +74,14 @@ class CollectTrainingData(object):
 
                 # print(image.shape)
                 pygame_image = pygame.image.frombuffer(
-                    image.tobytes(), (480, 864), "RGB")
+                    image.tobytes(), (864, 480), "RGB")
                 self.screen.blit(pygame_image, (0, 0))
 
                 for event in pygame.event.get():
                     if event.type == KEYDOWN:
                         key_input = pygame.key.get_pressed()
 
-                        if key_input[pygame.K_UP] and key_input[pygame.K_RIGHT]:
+                        if key_input[pygame.K_RIGHT]:
                             # TODO: SET PWM for Driving
                             print("Forward Right")
                             motor[0] = initial_pwm
@@ -89,7 +89,7 @@ class CollectTrainingData(object):
                             Y = 0
                             self.rc_driver.right(motor)
 
-                        elif key_input[pygame.K_UP] and key_input[pygame.K_LEFT]:
+                        elif  key_input[pygame.K_LEFT]:
                             print("Forward Left")
                             motor[0] = initial_pwm/2
                             motor[1] = initial_pwm
@@ -102,6 +102,11 @@ class CollectTrainingData(object):
                             motor[1] = initial_pwm
                             Y = 2
                             self.rc_driver.forward(motor)
+
+                        elif key_input[pygame.K_SPACE]:
+                            print("STOP Motor!!")
+                            self.rc_driver.stop_all()
+                            continue
 
                         elif key_input[pygame.K_x] or key_input[pygame.K_q]:
                             print("Exit")
