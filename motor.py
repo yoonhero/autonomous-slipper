@@ -23,8 +23,8 @@ class MotorPin:
 
 class Motor():
     def __init__(self):
-        self.leftMotor = MotorPin(36, 38, 32)
-        self.rightMotor = MotorPin(16, 18, 12)
+        self.leftMotor = MotorPin(5, 6, 19)
+        self.rightMotor = MotorPin(16, 20, 12)
 
         GPIO.setmode(GPIO.BCM)
 
